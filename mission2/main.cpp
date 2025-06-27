@@ -170,25 +170,37 @@ private:
         int car_ret = true;
         int break_ret = true;
 
+        if (manufacture[CarType_Q] == 0 || manufacture[Engine_Q] == 0 ||
+            manufacture[brakeSystem_Q] == 0 || manufacture[SteeringSystem_Q] == 0)
+            return false;
+
         switch (manufacture[CarType_Q]) {
         case SEDAN:
-            if (manufacture[brakeSystem_Q] == CONTINENTAL)
+            if (manufacture[brakeSystem_Q] == CONTINENTAL) {
+                printf("%s에는 %s제동장치 사용 불가\n", cenum2str[manufacture[CarType_Q]], benum2str[manufacture[brakeSystem_Q]]);
                 car_ret = false;
+            }
             break;
         case SUV:
-            if (manufacture[Engine_Q] == TOYOTA)
+            if (manufacture[Engine_Q] == TOYOTA) {
+                printf("%s에는 %s엔진 사용 불가\n", cenum2str[manufacture[CarType_Q]], eenum2str[manufacture[Engine_Q]]);
                 car_ret = false;
+            }
             break;
         case TRUCK:
-            if (manufacture[Engine_Q] == WIA || manufacture[brakeSystem_Q] == MANDO)
+            if (manufacture[Engine_Q] == WIA || manufacture[brakeSystem_Q] == MANDO) {
+                printf("%s에는 %s엔진 사용 불가\n", cenum2str[manufacture[CarType_Q]], eenum2str[manufacture[Engine_Q]]);
                 car_ret = false;
+            }
             break;
         }
 
         switch (manufacture[brakeSystem_Q]) {
         case BOSCH_B:
-            if (manufacture[SteeringSystem_Q] != BOSCH_S)
+            if (manufacture[SteeringSystem_Q] != BOSCH_S) {
+                printf("%s제동장치에는 %s조향장치 이외 사용 불가\n", benum2str[manufacture[brakeSystem_Q]], senum2str[manufacture[SteeringSystem_Q]]);
                 break_ret = false;
+            }
             break;
         }
 
@@ -200,59 +212,21 @@ private:
 
     void runProducedCar()
     {
-        if (isValidCheck() == false)
-        {
-            printf("자동차가 동작되지 않습니다\n");
-        }
-        else
-        {
-            if (manufacture[Engine_Q] == 4)
-            {
-                printf("엔진이 고장나있습니다.\n");
-                printf("자동차가 움직이지 않습니다.\n");
-            }
-            else
-            {
-                printf("Car Type : %s\n", cenum2str[manufacture[CarType_Q]]);
-                printf("Engine : %s.\n", eenum2str[manufacture[Engine_Q]]);
-                printf("Brake System : %s\n", benum2str[manufacture[brakeSystem_Q]]);
-                printf("SteeringSystem : %s\n", senum2str[manufacture[SteeringSystem_Q]]);
-                printf("자동차가 동작됩니다.\n");
-            }
+        if (manufacture[Engine_Q] == 4) {
+            printf("엔진이 고장나있습니다.\n");
+            printf("자동차가 움직이지 않습니다.\n");
+        } else {
+            printf("Car Type : %s\n", cenum2str[manufacture[CarType_Q]]);
+            printf("Engine : %s.\n", eenum2str[manufacture[Engine_Q]]);
+            printf("Brake System : %s\n", benum2str[manufacture[brakeSystem_Q]]);
+            printf("SteeringSystem : %s\n", senum2str[manufacture[SteeringSystem_Q]]);
+            printf("자동차가 동작됩니다.\n");
         }
     }
 
     void testProducedCar()
     {
-        if (manufacture[CarType_Q] == SEDAN && manufacture[brakeSystem_Q] == CONTINENTAL)
-        {
-            printf("자동차 부품 조합 테스트 결과 : FAIL\n");
-            printf("Sedan에는 Continental제동장치 사용 불가\n");
-        }
-        else if (manufacture[CarType_Q] == SUV && manufacture[Engine_Q] == TOYOTA)
-        {
-            printf("자동차 부품 조합 테스트 결과 : FAIL\n");
-            printf("SUV에는 TOYOTA엔진 사용 불가\n");
-        }
-        else if (manufacture[CarType_Q] == TRUCK && manufacture[Engine_Q] == WIA)
-        {
-            printf("자동차 부품 조합 테스트 결과 : FAIL\n");
-            printf("Truck에는 WIA엔진 사용 불가\n");
-        }
-        else if (manufacture[CarType_Q] == TRUCK && manufacture[brakeSystem_Q] == MANDO)
-        {
-            printf("자동차 부품 조합 테스트 결과 : FAIL\n");
-            printf("Truck에는 Mando제동장치 사용 불가\n");
-        }
-        else if (manufacture[brakeSystem_Q] == BOSCH_B && manufacture[SteeringSystem_Q] != BOSCH_S)
-        {
-            printf("자동차 부품 조합 테스트 결과 : FAIL\n");
-            printf("Bosch제동장치에는 Bosch조향장치 이외 사용 불가\n");
-        }
-        else
-        {
-            printf("자동차 부품 조합 테스트 결과 : PASS\n");
-        }
+        printf("자동차 부품 조합 테스트 결과 : PASS\n");
     }
 
 public:
@@ -260,15 +234,9 @@ public:
     {
         volatile int sum = 0;
         for (int i = 0; i < 1000; i++)
-        {
             for (int j = 0; j < 1000; j++)
-            {
                 for (int t = 0; t < ms; t++)
-                {
                     sum++;
-                }
-            }
-        }
     }
 
     bool printManufacture(int step)
@@ -348,6 +316,11 @@ public:
             step = Run_Test;
             break;
         case Run_Test:
+            if (isValidCheck() == false)
+            {
+                printf("자동차를 동작 또는 테스트 할 수 없습니다\n");
+                break;
+            }
             if (num == 1) {
                 runProducedCar();
                 customized_delay(TEST_DELAY);

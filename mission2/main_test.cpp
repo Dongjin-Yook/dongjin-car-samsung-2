@@ -171,12 +171,42 @@ TEST(Group, TC24) {
 
 TEST(Group, TC25) {
 	Manufacture t_manufacture;
+	int ret, i, j, k, t;
+
+	for (i = 1; i < END_CType; i++) {
+		for (j = 1; j < END_Engine; j++) {
+			for (k = 1; k < END_breakSystem; k++) {
+				for (t = 1; t < END_SteeringSystem; t++) {
+					ret = t_manufacture.selectManufacture(CarType_Q, i);
+					EXPECT_EQ(Engine_Q, ret);
+
+					ret = t_manufacture.selectManufacture(Engine_Q, j);
+					EXPECT_EQ(brakeSystem_Q, ret);
+
+					ret = t_manufacture.selectManufacture(brakeSystem_Q, k);
+					EXPECT_EQ(SteeringSystem_Q, ret);
+
+					ret = t_manufacture.selectManufacture(SteeringSystem_Q, t);
+					EXPECT_EQ(Run_Test, ret);
+
+					ret = t_manufacture.selectManufacture(Run_Test, 1);
+					ret = t_manufacture.selectManufacture(Run_Test, 2);
+
+					EXPECT_EQ(Run_Test, ret);
+				}
+			}
+		}
+	}
+}
+
+TEST(Group, TC26) {
+	Manufacture t_manufacture;
 	int ret;
 
 	ret = t_manufacture.selectManufacture(CarType_Q, SEDAN);
 	EXPECT_EQ(Engine_Q, ret);
 
-	ret = t_manufacture.selectManufacture(Engine_Q, TOYOTA);
+	ret = t_manufacture.selectManufacture(Engine_Q, END_Engine);
 	EXPECT_EQ(brakeSystem_Q, ret);
 
 	ret = t_manufacture.selectManufacture(brakeSystem_Q, MANDO);
@@ -187,6 +217,51 @@ TEST(Group, TC25) {
 
 	ret = t_manufacture.selectManufacture(Run_Test, 1);
 	ret = t_manufacture.selectManufacture(Run_Test, 2);
+
+	EXPECT_EQ(Run_Test, ret);
+}
+
+TEST(Group, TC27) {
+	Manufacture t_manufacture;
+	int ret;
+
+	ret = t_manufacture.selectManufacture(CarType_Q, SEDAN);
+	EXPECT_EQ(Engine_Q, ret);
+
+	ret = t_manufacture.selectManufacture(Engine_Q, GM);
+	EXPECT_EQ(brakeSystem_Q, ret);
+
+	ret = t_manufacture.selectManufacture(brakeSystem_Q, MANDO);
+	EXPECT_EQ(SteeringSystem_Q, ret);
+
+	ret = t_manufacture.selectManufacture(SteeringSystem_Q, BOSCH_S);
+	EXPECT_EQ(Run_Test, ret);
+
+	ret = t_manufacture.selectManufacture(Run_Test, 1);
+	ret = t_manufacture.selectManufacture(Run_Test, 2);
+
+	EXPECT_EQ(Run_Test, ret);
+}
+
+TEST(Group, TC28) {
+	Manufacture t_manufacture;
+	int ret;
+
+	ret = t_manufacture.selectManufacture(CarType_Q, SEDAN);
+	EXPECT_EQ(Engine_Q, ret);
+
+	ret = t_manufacture.selectManufacture(Engine_Q, GM);
+	EXPECT_EQ(brakeSystem_Q, ret);
+
+	ret = t_manufacture.selectManufacture(brakeSystem_Q, MANDO);
+	EXPECT_EQ(SteeringSystem_Q, ret);
+
+	ret = t_manufacture.selectManufacture(SteeringSystem_Q, BOSCH_S);
+	EXPECT_EQ(Run_Test, ret);
+
+	ret = t_manufacture.selectManufacture(Run_Test, 1);
+	ret = t_manufacture.selectManufacture(Run_Test, 2);
+	ret = t_manufacture.selectManufacture(Run_Test, 3);
 
 	EXPECT_EQ(Run_Test, ret);
 }
